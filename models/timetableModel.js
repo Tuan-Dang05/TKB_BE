@@ -11,14 +11,16 @@ class TimetableModel {
         await pool.query('DELETE FROM classes');
     
         // Chèn dữ liệu mới
-        const query = 'INSERT INTO classes (ten_hoc_phan, ma_hoc_phan, tiet_hoc, ngay_hoc, gio_bat_dau, gio_ket_thuc, phong_hoc) VALUES ?';
+        const query = 'INSERT INTO classes (ten_hoc_phan, ma_hoc_phan, tiet_hoc, ngay_bat_dau,ngay_ket_thuc, thu, gio_bat_dau, gio_ket_thuc, phong_hoc) VALUES ?';
         const values = classes
-        .filter(row => row['Tên Học Phần'] && row['Mã HP'] && row['Tiết Học'] && row['Ngày Học'] && row['Giờ Bắt Đầu'] && row['Giờ Kết Thúc'] && row['Phòng Học'])
+        .filter(row => row['Tên Học Phần'] && row['Mã HP'] && row['Tiết Học'] && row['Ngày Bắt Đầu'] && row['Ngày Kết Thúc'] && row['Thứ'] && row['Giờ Bắt Đầu'] && row['Giờ Kết Thúc'] && row['Phòng Học'])
         .map(row => [
             row['Tên Học Phần'], 
             row['Mã HP'], 
             row['Tiết Học'], 
-            row['Ngày Học'], 
+            row['Ngày Bắt Đầu'], 
+            row['Ngày Kết Thúc'],
+            row['Thứ'], 
             row['Giờ Bắt Đầu'], 
             row['Giờ Kết Thúc'], 
             row['Phòng Học']

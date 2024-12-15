@@ -12,7 +12,7 @@ exports.uploadTimetable = async (req, res) => {
         const workbook = xlsx.readFile(req.file.path);
         const worksheet = workbook.Sheets[workbook.SheetNames[0]];
 
-        const requiredFields = ['Tên Học Phần', 'Mã HP', 'Tiết Học','Ngày Học', 'Giờ Bắt Đầu', 'Giờ Kết Thúc', 'Phòng Học'];
+        const requiredFields = ['Tên Học Phần', 'Mã HP', 'Tiết Học','Ngày Bắt Đầu','Ngày Kết Thúc', 'Thứ', 'Giờ Bắt Đầu', 'Giờ Kết Thúc', 'Phòng Học'];
 
         // Xử lý dữ liệu từ Excel
         const data = xlsx.utils.sheet_to_json(worksheet)
@@ -22,9 +22,11 @@ exports.uploadTimetable = async (req, res) => {
         .map(row => {
             const startTime = formatTime(row['Giờ Bắt Đầu']);
             const endTime = formatTime(row['Giờ Kết Thúc']);
-            const studyDate = formatDate(row['Ngày Học']); // Chuyển đổi ngày học
+            const studyDate = formatDate(row['Ngày Bắt Đầu']); // Chuyển đổi ngày học
+            const studyDate2 = formatDate(row['Ngày Kết Thúc']); // Chuyển đổi ngày học
     
-            console.log(`Ngày học (Excel): ${row['Ngày Học']} -> ${studyDate}`);
+            console.log(`Ngày Bắt đầu (Excel): ${row['Ngày Bắt Đầu']} -> ${studyDate}`);
+            console.log(`Ngày Kết Thúc (Excel): ${row['Ngày Kết Thúc']} -> ${studyDate}`);
             console.log(`Giờ bắt đầu: ${row['Giờ Bắt Đầu']} -> ${startTime}`);
             console.log(`Giờ kết thúc: ${row['Giờ Kết Thúc']} -> ${endTime}`);
     
@@ -32,7 +34,9 @@ exports.uploadTimetable = async (req, res) => {
                 'Tên Học Phần': row['Tên Học Phần'].trim(),
                 'Mã HP': row['Mã HP'].trim(),
                 'Tiết Học': row['Tiết Học'].trim(),
-                'Ngày Học': studyDate,
+                'Ngày Bắt Đầu': studyDate,
+                'Ngày Kết Thúc': studyDate2,
+                'Thứ': row['Thứ'],
                 'Giờ Bắt Đầu': startTime,
                 'Giờ Kết Thúc': endTime,
                 'Phòng Học': row['Phòng Học'].trim(),
