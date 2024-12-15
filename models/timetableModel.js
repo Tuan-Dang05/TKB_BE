@@ -2,7 +2,20 @@ const { pool } = require('../config/database');
 
 class TimetableModel {
     static async getAllClasses() {
-        const [rows] = await pool.query('SELECT * FROM classes');
+        const [rows] = await pool.query(`
+            SELECT 
+                id, 
+                ten_hoc_phan, 
+                ma_hoc_phan, 
+                tiet_hoc, 
+                CONVERT_TZ(ngay_bat_dau, '+00:00', '+07:00') as ngay_bat_dau,
+                CONVERT_TZ(ngay_ket_thuc, '+00:00', '+07:00') as ngay_ket_thuc,
+                thu, 
+                gio_bat_dau, 
+                gio_ket_thuc, 
+                phong_hoc 
+            FROM classes
+        `);
         return rows;
     }
 
